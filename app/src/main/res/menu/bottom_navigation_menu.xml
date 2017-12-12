@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/ic_home"
+        android:icon="@drawable/ic_home"
+        android:title="">
+    </item>
+
+
+    <item
+        android:id="@+id/ic_chat"
+        android:icon="@drawable/ic_chat"
+        android:title="">
+    </item>
+
+    <item
+        android:id="@+id/ic_calendar"
+        android:icon="@drawable/ic_calendar"
+        android:title="">
+    </item>
+
+    <item
+        android:id="@+id/ic_note"
+        android:icon="@drawable/ic_note"
+        android:title="">
+    </item>
+
+    <item
+        android:id="@+id/ic_user"
+        android:icon="@drawable/ic_plus"
+        android:title="">
+    </item>
+</menu>

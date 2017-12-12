@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="1dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants">
+
+        <TextView
+            android:id="@+id/thread_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:textSize="20sp"
+            android:paddingTop="7.5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="0dp"
+            />
+
+        <TextView
+            android:id="@+id/thread_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="blah blah blah"
+            android:textSize="12sp"
+            android:layout_below="@id/thread_title"
+            android:paddingTop="0dp"
+            android:paddingBottom="7dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="0dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/linLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/thread_subtitle"
+            android:paddingLeft="15dp"
+            android:paddingBottom="7.5dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_photo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="0.5dp" />
+
+            <TextView
+                android:id="@+id/poster"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Brad Logan"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:paddingLeft="8dp"/>
+
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Brad Logan"
+                android:textSize="10sp"
+                android:layout_toRightOf="@id/poster"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingTop="3dp"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

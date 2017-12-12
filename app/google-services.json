@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "511754985063",
+    "firebase_url": "https://classroots-base.firebaseio.com",
+    "project_id": "classroots-base",
+    "storage_bucket": "classroots-base.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511754985063:android:898cdba3878d9bcb",
+        "android_client_info": {
+          "package_name": "com.classroots.classroots"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511754985063-2sbqo04vh253e5q6hmmr43jknddg0hc9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.classroots.classroots",
+            "certificate_hash": "136701d1ac08133b343eaef4ed5a1cdcf05296f0"
+          }
+        },
+        {
+          "client_id": "511754985063-4f4o9fnhhg7gnv6d851414oeh3uu051f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYi6nrNzjqwK6zyK3oWy6Csvy-ynq-TK8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511754985063-4f4o9fnhhg7gnv6d851414oeh3uu051f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="grey">#bfbfbf</color>
+    <color name="white">#fff</color>
+    <color name="black">#000000</color>
+    <color name="link_blue">#005ce6</color>
+
+    <color name="top_gradient">#CA99CF</color>
+    <color name="top_gradient_darker">#d63be6</color>
+    <color name="bottom_gradient">#90FBCB</color>
+    <color name="bottom_gradient_darker">#3ae99a</color>
+
+
+</resources>

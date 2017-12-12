@@ -1,0 +1,11 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/bottom_gradient_darker</item>
+        <item name="colorPrimaryDark">@color/bottom_gradient</item>
+        <item name="colorAccent">@color/bottom_gradient</item>
+    </style>
+
+</resources>
