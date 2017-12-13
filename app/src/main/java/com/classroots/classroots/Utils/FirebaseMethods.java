@@ -12,6 +12,7 @@ import com.classroots.classroots.User.AccountSettingsActivity;
 import com.classroots.classroots.User.UserActivity;
 import com.classroots.classroots.models.Photo;
 import com.classroots.classroots.models.Root;
+import com.classroots.classroots.models.Thread;
 import com.classroots.classroots.models.User;
 import com.classroots.classroots.models.UserAccountSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -201,7 +202,7 @@ public class FirebaseMethods {
 
     private String getTimestamp(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));
+        sdf.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
         return sdf.format(new Date());
     }
 
@@ -409,6 +410,28 @@ public class FirebaseMethods {
 
     }
 
+    public void addNewThread(String title, String subtitle, UserAccountSettings mUserAccountSettings){
+        String date = getTimestamp();
+        String newThreadKey = myRef.child(mContext.getString(R.string.dbname_roots))
+                .child(mContext.getString(R.string.dbname_institution))
+                .child(mUserAccountSettings.getUniversity())
+                .child(mUserAccountSettings.getCurrent_root_id())
+                .child(mContext.getString(R.string.dbname_threads)).push().getKey();
+        String user_id = mUserAccountSettings.getUser_id();
+        Thread newThread = new Thread( title, subtitle, newThreadKey, user_id, 0, date);
+
+        Log.d(TAG, "addNewThread: printing thread data... " + newThread);
+
+
+        myRef.child(mContext.getString(R.string.dbname_roots))
+                .child(mContext.getString(R.string.dbname_institution))
+                .child(mUserAccountSettings.getUniversity())
+                .child(mUserAccountSettings.getCurrent_root_id())
+                .child(mContext.getString(R.string.dbname_threads))
+                .child(newThreadKey)
+                .setValue(newThread);
+    }
+
 
     /**
      * Retrieves the account settings for teh user currently logged in
@@ -417,7 +440,7 @@ public class FirebaseMethods {
      * @return
      */
     public UserSettings getUserSettings(DataSnapshot dataSnapshot){
-        Log.d(TAG, "gerUserSettings: retrieving user account settings from firebase.");
+        Log.d(TAG, "getUserSettings: retrieving user account settings from firebase.");
 
 
         UserAccountSettings settings  = new UserAccountSettings();
@@ -427,7 +450,7 @@ public class FirebaseMethods {
 
             // user_account_settings node
             if(ds.getKey().equals(mContext.getString(R.string.dbname_user_account_settings))){
-                Log.d(TAG, "gerUserSettings: datasnapshot: " + ds);
+                Log.d(TAG, "getUserSettings: datasnapshot: " + ds);
 
                 try{
 

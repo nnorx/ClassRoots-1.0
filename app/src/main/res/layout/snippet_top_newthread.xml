@@ -10,7 +10,7 @@
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/ForumToolBar">
+            android:id="@+id/profileToolBar">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -21,29 +21,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text=""
+                    android:text="New Thread"
                     android:textSize="20sp"
                     android:layout_marginStart="15dp"
-                    android:layout_toRightOf="@id/search_icon"
-                    android:id="@+id/root_name"
-                    android:textColor="#8888"/>
+                    android:layout_toRightOf="@id/backArrow"
+                    android:id="@+id/new_thread" />
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:id="@+id/search_icon"
-                    android:src="@drawable/ic_search"
+                    android:id="@+id/backArrow"
+                    android:src="@drawable/ic_backarrow"
                     />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="29dp"
+                    android:layout_height="29dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:id="@+id/new_thread"
-                    android:src="@drawable/ic_plus2"
+                    android:id="@+id/send"
+                    android:src="@drawable/ic_send"
                     />
 
             </RelativeLayout>

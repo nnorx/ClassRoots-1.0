@@ -117,56 +117,24 @@ public class ForumFragment extends Fragment {
         mRoot = (TextView) view.findViewById(R.id.root_name);
         mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
         mProgressBar = (ProgressBar) view.findViewById(R.id.forumProgressBar);
-        toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
-        newThread = (ImageView) view.findViewById(R.id.profileMenu);
+        toolbar = (Toolbar) view.findViewById(R.id.ForumToolBar);
+        newThread = (ImageView) view.findViewById(R.id.new_thread);
         listView = (ListView) view.findViewById(R.id.lvForum);
         bottomNavigationView = (BottomNavigationViewEx) view.findViewById(R.id.bottomNavViewBar);
         mContext = getActivity();
         mFirebaseMethods = new FirebaseMethods(getActivity());
         Log.d(TAG, "onCreate: started.");
 
-
+        setupToolbar();
+        setupBottomNavigationView();
         setupFirebaseAuth();
 
         mProgressBar.setVisibility(View.GONE);
 
-        Log.d(TAG, "setupForumWidgets1: printing threads.." + threads);
-        Log.d(TAG, "setupForumWidgets1: printing threadUserData" + threadUserSettings);
 
-
-        setupBottomNavigationView();
         return view;
 
     }
-
-
-
-    public void setViewPager(int fragmentNumber) {
-        mRelativeLayout.setVisibility(View.GONE);
-        Log.d(TAG, "setmViewPager: navigating to fragment number: " + fragmentNumber);
-        mViewPager.setAdapter(pagerAdapter);
-        mViewPager.setCurrentItem(fragmentNumber);
-    }
-
-
-    private void setupForumWidgets(UserSettings userSettings){
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.toString());
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getSettings().getUsername());
-
-        UserAccountSettings settings = userSettings.getSettings();
-
-        if(mAuth.getCurrentUser() != null){
-            Log.d(TAG, "setupForumWidgets: printing userSettings.." + userSettings);
-            mSettings = settings;
-            mRoot.setText(settings.getCurrent_root());
-
-
-            getThreads(mSettings);
-
-        }
-
-    }
-
 
 
     /**
@@ -182,10 +150,25 @@ public class ForumFragment extends Fragment {
     }
 
 
+    private void setupForumWidgets(UserSettings userSettings){
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.toString());
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getSettings().getUsername());
 
+        UserAccountSettings settings = userSettings.getSettings();
+
+        if(mAuth.getCurrentUser() != null){
+            Log.d(TAG, "setupForumWidgets: printing userSettings.." + userSettings);
+            mSettings = settings;
+            mRoot.setText(settings.getCurrent_root());
+            getThreads(mSettings);
+
+        }
+
+    }
 
     private void getThreads(UserAccountSettings settings){
         Log.d(TAG, "setupListView. getting threads...");
+        threads.clear();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference
@@ -208,12 +191,6 @@ public class ForumFragment extends Fragment {
 
                 getThreadUserData(threads);
 
-                /*
-                for(int num = 0; num < threads.size(); num++ ){
-                    getThreadUserData(num);
-                }
-                */
-
 
             }
 
@@ -227,6 +204,7 @@ public class ForumFragment extends Fragment {
 
     private void getThreadUserData(final ArrayList<Thread> theThreads){
         Log.d(TAG, "getThreadUserData. getting thread user data... index: ");
+        threadUserSettings.clear();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference
@@ -261,17 +239,7 @@ public class ForumFragment extends Fragment {
             Log.d(TAG, "setupListView: threadsUserSettings is null");
         } else {
             Log.d(TAG, "setupListView: threads and threadsUserSettings are not null");
-
-
-            Log.d(TAG, "setupListView: threads.size "+threads.size());
-            Log.d(TAG, "setupListView: threadUserSettings.size "+threadUserSettings.size());
-
-
-            Log.d(TAG, "setupListView: printing first title :" + threads.get(0).getTitle());
-            Log.d(TAG, "setupListView: printing first title :" + threads.get(1).getTitle());
-            Log.d(TAG, "setupListView: printing first title :" + threadUserSettings.get(0).getDisplay_name());
-            Log.d(TAG, "setupListView: printing first title :" + threadUserSettings.get(1).getDisplay_name());
-
+            Log.d(TAG, "setupListView: threadsUserSettings.size = " +threadUserSettings.size());
 
             ArrayList<ForumListItem> forumListItems = new ArrayList<>();
             for(int i=0; i<threads.size(); i++){
@@ -335,16 +303,17 @@ public class ForumFragment extends Fragment {
      */
     private void setupToolbar(){
 
-        ((UserActivity)getActivity()).setSupportActionBar(toolbar);
+        ((ForumActivity)getActivity()).setSupportActionBar(toolbar);
 
         newThread.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating to account settings.");
-                Intent intent = new Intent(mContext, AccountSettingsActivity.class);
+                Log.d(TAG, "onClick: navigating to new thread activity.");
+                Intent intent = new Intent(mContext, NewThreadActivity.class);
                 startActivity(intent);
             }
         });
+
     }
 
 

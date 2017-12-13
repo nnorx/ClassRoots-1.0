@@ -170,14 +170,9 @@ public class UserFragment extends Fragment {
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.toString());
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getSettings().getUsername());
 
-
-        //User user = userSettings.getUser();
         UserAccountSettings settings = userSettings.getSettings();
 
         UniversalImageLoader.setImage(settings.getProfile_photo(), mProfilePhoto, null, "");
-
-
-
         mDisplayName.setText(settings.getDisplay_name());
         mUsername.setText(settings.getUsername());
         mUniversity.setText(settings.getUniversity());
