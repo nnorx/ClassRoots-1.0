@@ -58,6 +58,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -176,7 +177,8 @@ public class ForumFragment extends Fragment {
                 .child(getString(R.string.dbname_institution))
                 .child(settings.getUniversity())
                 .child(settings.getCurrent_root_id())
-                .child(getString(R.string.dbname_threads));
+                .child(getString(R.string.dbname_threads))
+                .orderByChild(getString(R.string.field_thread_date));
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -188,6 +190,8 @@ public class ForumFragment extends Fragment {
                     Log.d(TAG, "onDataChange: Printing UIDs associated with posts.." + threads.get(i).getPoster());
                     i++;
                 }
+
+                Collections.reverse(threads);
 
                 getThreadUserData(threads);
 
@@ -354,15 +358,24 @@ public class ForumFragment extends Fragment {
                     Log.e(TAG, "getTimestampDifference: ParseException: " + e.getMessage() );
                     difference = "0";
                 }
-
-                return difference + " minutes ago";
-
+                if(difference == "1"){
+                    return difference + " minute ago";
+                } else {
+                    return difference + " minutes ago";
+                }
             } else {
-                return difference + " hours ago";
+                if(difference == "1"){
+                    return difference + " hour ago";
+                } else {
+                    return difference + " hours ago";
+                }
             }
         }
-
-        return difference + " days ago";
+        if(difference == "1"){
+            return difference + " day ago";
+        } else {
+            return difference + " days ago";
+        }
     }
 
 
