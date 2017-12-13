@@ -53,13 +53,12 @@ public class Thread {
     @Override
     public String toString() {
         return "Thread{" +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", subtitle='" + subtitle + '\'' +
                 ", thread_id='" + thread_id + '\'' +
-                ", reply_number='" + reply_number + '\'' +
+                ", poster='" + poster + '\'' +
+                ", reply_number=" + reply_number +
+                ", date='" + date + '\'' +
                 '}';
     }
-
-
-
 }

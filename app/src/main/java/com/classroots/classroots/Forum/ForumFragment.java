@@ -32,6 +32,7 @@ import com.classroots.classroots.User.UserActivity;
 import com.classroots.classroots.Utils.FirebaseMethods;
 import com.classroots.classroots.Utils.SectionsStatePagerAdapter;
 import com.classroots.classroots.Utils.UniversalImageLoader;
+import com.classroots.classroots.models.ForumListItem;
 import com.classroots.classroots.models.Root;
 import com.classroots.classroots.models.Thread;
 import com.classroots.classroots.models.User;
@@ -53,8 +54,14 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import com.classroots.classroots.Utils.BottomNavigationViewHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -96,6 +103,11 @@ public class ForumFragment extends Fragment {
     private UserAccountSettings mSettings = new UserAccountSettings();
 
 
+    //vars
+    private ArrayList<Thread> threads = new ArrayList<>();
+    private ArrayList<UserAccountSettings> threadUserSettings = new ArrayList<>();
+
+
 
 
     @Nullable
@@ -115,8 +127,16 @@ public class ForumFragment extends Fragment {
 
 
         setupFirebaseAuth();
+
+        mProgressBar.setVisibility(View.GONE);
+
+        Log.d(TAG, "setupForumWidgets1: printing threads.." + threads);
+        Log.d(TAG, "setupForumWidgets1: printing threadUserData" + threadUserSettings);
+
+
         setupBottomNavigationView();
         return view;
+
     }
 
 
@@ -135,12 +155,16 @@ public class ForumFragment extends Fragment {
 
         UserAccountSettings settings = userSettings.getSettings();
 
+        if(mAuth.getCurrentUser() != null){
+            Log.d(TAG, "setupForumWidgets: printing userSettings.." + userSettings);
+            mSettings = settings;
+            mRoot.setText(settings.getCurrent_root());
 
 
-        mSettings = settings;
-        mRoot.setText(settings.getCurrent_root());
-        setupListView();
-        mProgressBar.setVisibility(View.GONE);
+            getThreads(mSettings);
+
+        }
+
     }
 
 
@@ -159,15 +183,16 @@ public class ForumFragment extends Fragment {
 
 
 
-    private void setupListView(){
+
+    private void getThreads(UserAccountSettings settings){
         Log.d(TAG, "setupListView. getting threads...");
-        final ArrayList<Thread> threads = new ArrayList<>();
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference
                 .child(getString(R.string.dbname_roots))
                 .child(getString(R.string.dbname_institution))
-                .child(mSettings.getUniversity())
-                .child(mSettings.getCurrent_root_id())
+                .child(settings.getUniversity())
+                .child(settings.getCurrent_root_id())
                 .child(getString(R.string.dbname_threads));
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -177,15 +202,18 @@ public class ForumFragment extends Fragment {
                 for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
                     threads.add(singleSnapshot.getValue(Thread.class));
 
-                    Log.d(TAG, "setupListView. Printing UIDs.." + threads.get(i).getPoster());
+                    Log.d(TAG, "onDataChange: Printing UIDs associated with posts.." + threads.get(i).getPoster());
                     i++;
                 }
 
+                getThreadUserData(threads);
 
+                /*
+                for(int num = 0; num < threads.size(); num++ ){
+                    getThreadUserData(num);
+                }
+                */
 
-
-                customListAdapter = new ForumFragment.ListAdapter(mContext, R.layout.list_item_thread, threads);
-                listView.setAdapter(customListAdapter);
 
             }
 
@@ -194,28 +222,77 @@ public class ForumFragment extends Fragment {
                 Log.d(TAG, "onCancelled: query cancelled.");
             }
         });
+    }
 
 
+    private void getThreadUserData(final ArrayList<Thread> theThreads){
+        Log.d(TAG, "getThreadUserData. getting thread user data... index: ");
 
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                .child(getString(R.string.dbname_user_account_settings))
+                .orderByChild(getString(R.string.field_user_id));
 
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(int i=0; i<theThreads.size(); i++){
+                    threadUserSettings.add(dataSnapshot.child(theThreads.get(i).getPoster()).getValue(UserAccountSettings.class));
+                }
+                setupListView();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query cancelled.");
+            }
+        });
+        Log.d(TAG, "getThreadUserData: added listener for query");
     }
 
 
 
 
 
+    private void setupListView(){
+        if(threads == null){
+            Log.d(TAG, "setupListView: threads is null");
+        } else if(threadUserSettings == null) {
+            Log.d(TAG, "setupListView: threadsUserSettings is null");
+        } else {
+            Log.d(TAG, "setupListView: threads and threadsUserSettings are not null");
+
+
+            Log.d(TAG, "setupListView: threads.size "+threads.size());
+            Log.d(TAG, "setupListView: threadUserSettings.size "+threadUserSettings.size());
+
+
+            Log.d(TAG, "setupListView: printing first title :" + threads.get(0).getTitle());
+            Log.d(TAG, "setupListView: printing first title :" + threads.get(1).getTitle());
+            Log.d(TAG, "setupListView: printing first title :" + threadUserSettings.get(0).getDisplay_name());
+            Log.d(TAG, "setupListView: printing first title :" + threadUserSettings.get(1).getDisplay_name());
+
+
+            ArrayList<ForumListItem> forumListItems = new ArrayList<>();
+            for(int i=0; i<threads.size(); i++){
+                forumListItems.add(new ForumListItem(threads.get(i),threadUserSettings.get(i)));
+            }
+
+            customListAdapter = new ForumFragment.ListAdapter(mContext, R.layout.list_item_thread, forumListItems);
+            listView.setAdapter(customListAdapter);
+        }
+    }
 
 
 
 
-    public class ListAdapter extends ArrayAdapter<Thread> {
+    public class ListAdapter extends ArrayAdapter<ForumListItem> {
 
         public ListAdapter(Context context, int textViewResourceId) {
             super(context, textViewResourceId);
         }
 
-        public ListAdapter(Context context, int resource, List<Thread> items) {
+        public ListAdapter(Context context, int resource, List<ForumListItem> items) {
             super(context, resource, items);
 
         }
@@ -231,8 +308,7 @@ public class ForumFragment extends Fragment {
                 v = vi.inflate(R.layout.list_item_thread, null);
             }
 
-            //final Thread q = getItem(position);
-            Thread p = getItem(position);
+            ForumListItem p = getItem(position);
 
             if (p != null) {
                 TextView tt1 = (TextView) v.findViewById(R.id.thread_title);
@@ -241,52 +317,17 @@ public class ForumFragment extends Fragment {
                 TextView tt4 = (TextView) v.findViewById(R.id.date);
                 CircleImageView c1 = (CircleImageView) v.findViewById(R.id.profile_photo);
 
-
-                //UserAccountSettings settings = getUserAccountSettingsFromID(p.getPoster());
-
-
-                if (tt1 != null) { tt1.setText(p.getTitle()); }
-                if (tt2 != null) { tt2.setText(p.getSubtitle()); }
-                if (tt3 != null) { tt3.setText(mSettings.getDisplay_name()); }
-                if (tt4 != null) { tt4.setText(p.getDate()); }
-                if (c1 != null) { UniversalImageLoader.setImage( mSettings.getProfile_photo(), c1, null, "");
+                if (tt1 != null) { tt1.setText(p.getThread().getTitle()); }
+                if (tt2 != null) { tt2.setText(p.getThread().getSubtitle()); }
+                if (tt3 != null) { tt3.setText(p.getSettings().getDisplay_name()); }
+                if (tt4 != null) { tt4.setText(getTimestampDifference(p.getThread().getDate())); }
+                if (c1 != null) { UniversalImageLoader.setImage( p.getSettings().getProfile_photo(), c1, null, "");
                 }
             }
-
             return v;
         }
 
     }
-
-
-    private UserAccountSettings getUserAccountSettingsFromID(String uid){
-        Log.d(TAG, "getting userAccountSettings for " + uid);
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        Query query2 = reference
-                .child(getString(R.string.dbname_user_account_settings))
-                .child(uid);
-        query2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
-                    mSettings = singleSnapshot.getValue(UserAccountSettings.class);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, "onCancelled: query cancelled.");
-            }
-        });
-
-        return mSettings;
-
-
-    }
-
 
 
     /**
@@ -305,6 +346,56 @@ public class ForumFragment extends Fragment {
             }
         });
     }
+
+
+    private String getTimestampDifference(String date){
+        Log.d(TAG, "getTimestampDifference: getting timestamp difference.");
+
+        String difference = "";
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        sdf.setTimeZone(TimeZone.getTimeZone("US/Eastern"));//google 'android list of timezones'
+        Date today = c.getTime();
+        sdf.format(today);
+        Date timestamp;
+        final String postTimestamp = date;
+        try{
+            timestamp = sdf.parse(postTimestamp);
+            difference = String.valueOf(Math.round(((today.getTime() - timestamp.getTime()) / 1000 / 60 / 60 / 24 )));
+        }catch (ParseException e){
+            Log.e(TAG, "getTimestampDifference: ParseException: " + e.getMessage() );
+            difference = "0";
+        }
+
+        if(Integer.parseInt(difference)>6){
+            return postTimestamp;
+        } else if (Integer.parseInt(difference) < 1) {
+            try{
+                timestamp = sdf.parse(postTimestamp);
+                difference = String.valueOf(Math.round(((today.getTime() - timestamp.getTime()) / 1000 / 60 / 60)));
+            }catch (ParseException e){
+                Log.e(TAG, "getTimestampDifference: ParseException: " + e.getMessage() );
+                difference = "0";
+            }
+            if(Integer.parseInt(difference) < 1){
+                try{
+                    timestamp = sdf.parse(postTimestamp);
+                    difference = String.valueOf(Math.round(((today.getTime() - timestamp.getTime()) / 1000 / 60 )));
+                }catch (ParseException e){
+                    Log.e(TAG, "getTimestampDifference: ParseException: " + e.getMessage() );
+                    difference = "0";
+                }
+
+                return difference + " minutes ago";
+
+            } else {
+                return difference + " hours ago";
+            }
+        }
+
+        return difference + " days ago";
+    }
+
 
 
 

@@ -394,6 +394,7 @@ public class FirebaseMethods {
 
 
         UserAccountSettings settings = new UserAccountSettings(
+                userID,
                 username,
                 profile_photo,
                 username1,
@@ -430,6 +431,11 @@ public class FirebaseMethods {
 
                 try{
 
+                    settings.setUser_id(
+                            ds.child(userID)
+                                    .getValue(UserAccountSettings.class)
+                                    .getUser_id()
+                    );
                     settings.setDisplay_name(
                             ds.child(userID)
                                     .getValue(UserAccountSettings.class)

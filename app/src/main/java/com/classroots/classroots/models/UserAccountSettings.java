@@ -2,6 +2,7 @@ package com.classroots.classroots.models;
 
 public class UserAccountSettings {
 
+    private String user_id;
     private String display_name;
     private String profile_photo;
     private String username;
@@ -9,7 +10,9 @@ public class UserAccountSettings {
     private String current_root;
     private String current_root_id;
 
-    public UserAccountSettings(String display_name, String profile_photo, String username, String university, String current_root, String current_root_id) {
+
+    public UserAccountSettings(String user_id, String display_name, String profile_photo, String username, String university, String current_root, String current_root_id) {
+        this.user_id = user_id;
         this.display_name = display_name;
         this.profile_photo = profile_photo;
         this.username = username;
@@ -19,6 +22,13 @@ public class UserAccountSettings {
     }
     public UserAccountSettings() {
 
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getDisplay_name() {
@@ -61,14 +71,16 @@ public class UserAccountSettings {
     }
     public void setCurrent_root_id(String current_root_id) { this.current_root_id = current_root_id; }
 
-
     @Override
     public String toString() {
         return "UserAccountSettings{" +
+                "user_id='" + user_id + '\'' +
                 ", display_name='" + display_name + '\'' +
                 ", profile_photo='" + profile_photo + '\'' +
                 ", username='" + username + '\'' +
                 ", university='" + university + '\'' +
+                ", current_root='" + current_root + '\'' +
+                ", current_root_id='" + current_root_id + '\'' +
                 '}';
     }
 }
