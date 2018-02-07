@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class UserActivity extends AppCompatActivity{
     private static final String TAG = "UserActivity";
-    private static final int ACTIVITY_NUM = 4;
+    private static final int ACTIVITY_NUM = 2;
     private Context mContext = UserActivity.this;
 
 

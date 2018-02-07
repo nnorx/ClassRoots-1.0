@@ -69,7 +69,7 @@ public class UserFragment extends Fragment {
     private static final String TAG = "UserFragment";
 
 
-    private static final int ACTIVITY_NUM = 4;
+    private static final int ACTIVITY_NUM = 2;
     private static final int NUM_GRID_COLUMNS = 1;
     private int currentBackgroundColor = 0xffffffff;
     private ArrayList<Root> tempRootList = null;

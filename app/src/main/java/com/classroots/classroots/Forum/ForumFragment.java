@@ -341,7 +341,14 @@ public class ForumFragment extends Fragment {
         }
 
         if(Integer.parseInt(difference)>6){
-            return postTimestamp;
+
+            if(difference == "1"){
+                return difference + " day ago";
+            } else {
+                return difference + " days ago";
+            }
+
+            //return postTimestamp;
         } else if (Integer.parseInt(difference) < 1) {
             try{
                 timestamp = sdf.parse(postTimestamp);

@@ -50,6 +50,8 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent2);
                         break;
 
+       /*
+
                     case R.id.ic_calendar:
                         Intent intent3 = new Intent(context, CalendarActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);//ACTIVITY_NUM = 2
@@ -61,6 +63,8 @@ public class BottomNavigationViewHelper {
                                 .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);//ACTIVITY_NUM = 3
                         context.startActivity(intent4);
                         break;
+
+        */
 
                     case R.id.ic_user:
                         Intent intent5 = new Intent(context, UserActivity.class)
