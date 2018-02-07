@@ -47,7 +47,7 @@
             android:orientation="horizontal"
             android:layout_below="@id/thread_subtitle"
             android:paddingLeft="15dp"
-            android:paddingBottom="7.5dp">
+            android:paddingBottom="2.5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_photo"
@@ -56,7 +56,6 @@
                 android:layout_gravity="center"
                 app:civ_border_color="@color/black"
                 app:civ_border_width="0.5dp" />
-
             <TextView
                 android:id="@+id/poster"
                 android:layout_width="wrap_content"
@@ -65,8 +64,6 @@
                 android:textSize="13sp"
                 android:gravity="center"
                 android:paddingLeft="8dp"/>
-
-
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
@@ -77,6 +74,70 @@
                 android:gravity="center"
                 android:paddingLeft="8dp"
                 android:paddingTop="3dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants"
+                android:paddingRight="3dp">
+
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/likes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_toLeftOf="@id/comments"
+                    android:paddingRight="8dp">
+                    <TextView
+                        android:id="@+id/likecount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="5"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:layout_toLeftOf="@id/heart"
+                        android:paddingRight="5dp"/>
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/heart"
+                        android:src="@drawable/ic_heart"
+                        android:layout_toLeftOf="@id/commentcount"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/comments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="8dp">
+                    <TextView
+                        android:id="@+id/commentcount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="5"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:layout_toLeftOf="@id/commentsbtn"
+                        android:paddingRight="5dp"/>
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/commentsbtn"
+                        android:src="@drawable/ic_chat"
+                        />
+                </LinearLayout>
+
+
+            </RelativeLayout>
 
         </LinearLayout>
     </RelativeLayout>

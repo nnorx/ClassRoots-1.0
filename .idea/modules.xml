@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ClassRoots.iml" filepath="$PROJECT_DIR$/ClassRoots.iml" />
+      <module fileurl="file://C:\Nick\AndroidStudio\ClassRootsV2\ClassRoots.iml" filepath="C:\Nick\AndroidStudio\ClassRootsV2\ClassRoots.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ClassRootsV2.iml" filepath="$PROJECT_DIR$/.idea/ClassRootsV2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

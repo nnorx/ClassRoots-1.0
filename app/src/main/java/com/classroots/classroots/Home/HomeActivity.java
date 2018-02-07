@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.classroots.classroots.Forum.ForumActivity;
+import com.classroots.classroots.Forum.ForumFragment;
 import com.classroots.classroots.Login.LoginActivity;
 import com.classroots.classroots.R;
 import com.classroots.classroots.Utils.BottomNavigationViewHelper;
@@ -41,8 +44,10 @@ public class HomeActivity extends AppCompatActivity {
         setupFirebaseAuth();
 
         initImageLoader();
-        setupBottomNavigationView();
-        setupViewPager();
+        //setupBottomNavigationView();
+        //setupViewPager();
+
+        init();
 
 
     }
@@ -53,9 +58,11 @@ public class HomeActivity extends AppCompatActivity {
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
     }
 
-    /**
-    * Responsible for adding tabs: home and settings
-    */
+
+    /*
+
+    //Responsible for adding tabs: home and settings
+
     private void setupViewPager(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFragment()); //index 0
@@ -68,9 +75,9 @@ public class HomeActivity extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_settings);
-
-
     }
+    */
+
 
     /******* BottomNavigationView setup ****/
     private void setupBottomNavigationView(){
@@ -82,6 +89,19 @@ public class HomeActivity extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
+
+
+    private void init(){
+        Log.d(TAG, "init: inflating " + getString(R.string.profile_fragment));
+
+        HomeFragment fragment = new HomeFragment();
+        FragmentTransaction transaction = HomeActivity.this.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(getString(R.string.profile_fragment));
+        transaction.commit();
+
+    }
+
 
       /*
     ------------------------------------ Firebase ---------------------------------------------
@@ -141,3 +161,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 }
+
+
+
