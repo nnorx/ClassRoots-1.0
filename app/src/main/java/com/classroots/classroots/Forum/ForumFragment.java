@@ -131,10 +131,7 @@ public class ForumFragment extends Fragment {
         setupFirebaseAuth();
 
         mProgressBar.setVisibility(View.GONE);
-
-
         return view;
-
     }
 
 
@@ -152,17 +149,15 @@ public class ForumFragment extends Fragment {
 
 
     private void setupForumWidgets(UserSettings userSettings){
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.toString());
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database: " + userSettings.getSettings().getUsername());
+        Log.d(TAG, "setForumWidgets: setting widgets with data retrieving from firebase database");
 
         UserAccountSettings settings = userSettings.getSettings();
+        mSettings = userSettings.getSettings();
 
         if(mAuth.getCurrentUser() != null){
-            Log.d(TAG, "setupForumWidgets: printing userSettings.." + userSettings);
             mSettings = settings;
             mRoot.setText(settings.getCurrent_root());
             getThreads(mSettings);
-
         }
 
     }
@@ -182,19 +177,14 @@ public class ForumFragment extends Fragment {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 int i=0;
                 for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
                     threads.add(singleSnapshot.getValue(Thread.class));
-
-                    Log.d(TAG, "onDataChange: Printing UIDs associated with posts.." + threads.get(i).getPoster());
+                    Log.d(TAG, "onDataChange: Getting threads...");
                     i++;
                 }
-
                 Collections.reverse(threads);
-
                 getThreadUserData(threads);
-
 
             }
 
@@ -270,7 +260,7 @@ public class ForumFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             View v = convertView;
 
@@ -287,14 +277,44 @@ public class ForumFragment extends Fragment {
                 TextView tt2 = (TextView) v.findViewById(R.id.thread_subtitle);
                 TextView tt3 = (TextView) v.findViewById(R.id.poster);
                 TextView tt4 = (TextView) v.findViewById(R.id.date);
+
+                TextView tt5 = (TextView) v.findViewById(R.id.likecount);
+                TextView tt6 = (TextView) v.findViewById(R.id.commentcount);
+
                 CircleImageView c1 = (CircleImageView) v.findViewById(R.id.profile_photo);
 
                 if (tt1 != null) { tt1.setText(p.getThread().getTitle()); }
                 if (tt2 != null) { tt2.setText(p.getThread().getSubtitle()); }
                 if (tt3 != null) { tt3.setText(p.getSettings().getDisplay_name()); }
                 if (tt4 != null) { tt4.setText(getTimestampDifference(p.getThread().getDate())); }
-                if (c1 != null) { UniversalImageLoader.setImage( p.getSettings().getProfile_photo(), c1, null, "");
-                }
+                if (tt5 != null) { tt5.setText(String.valueOf(p.getThread().getLike_number())); }
+                if (tt6 != null) { tt6.setText(String.valueOf(p.getThread().getReply_number())); }
+                if (c1 != null) { UniversalImageLoader.setImage( p.getSettings().getProfile_photo(), c1, null, ""); }
+
+                View iv1 = (View) v.findViewById(R.id.likes);
+
+                iv1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "like button clicked... on item " + position);
+                        //getItem(position).getThread().setLike_number(getItem(position).getThread().getLike_number()+1);
+                        //Log.d(TAG, "onClick: likes : " + getItem(position).getThread().getLike_number());
+                        mFirebaseMethods.likeThread(getItem(position).getThread(), mSettings);
+                    }
+                });
+
+/*
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "onClick: navigating to new clicked thread..");
+                        Intent intent = new Intent(mContext, ThreadActivity.class);
+                        startActivity(intent);
+                    }
+                });
+*/
+
+
             }
             return v;
         }

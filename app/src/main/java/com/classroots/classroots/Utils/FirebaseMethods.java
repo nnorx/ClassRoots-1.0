@@ -418,7 +418,7 @@ public class FirebaseMethods {
                 .child(mUserAccountSettings.getCurrent_root_id())
                 .child(mContext.getString(R.string.dbname_threads)).push().getKey();
         String user_id = mUserAccountSettings.getUser_id();
-        Thread newThread = new Thread( title, subtitle, newThreadKey, user_id, 0, date);
+        Thread newThread = new Thread( title, subtitle, newThreadKey, user_id, 0, 0, date);
 
         Log.d(TAG, "addNewThread: printing thread data... " + newThread);
 
@@ -431,6 +431,19 @@ public class FirebaseMethods {
                 .child(newThreadKey)
                 .setValue(newThread);
     }
+
+    public void likeThread(Thread thread,UserAccountSettings someSettings){
+        myRef.child(mContext.getString(R.string.dbname_roots))
+                .child(mContext.getString(R.string.dbname_institution))
+                .child(someSettings.getUniversity())
+                .child(someSettings.getCurrent_root_id())
+                .child(mContext.getString(R.string.dbname_threads))
+                .child(thread.getThread_id())
+                .child(mContext.getString(R.string.dbname_like_number))
+                .setValue(thread.getLike_number()+1);
+
+    }
+
 
 
     /**
